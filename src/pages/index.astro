@@ -4,15 +4,7 @@
 <link rel="stylesheet" href="/style.css">
 <h1>Face detection using the MediaPipe Face Detector task</h1>
 <section id="demos" class="invisible">
-  <h2>Demo: Detecting Faces</h2>
-  <p><b>Click on an image below</b> to detect faces in the image.</p>
-
-  <div class="detectOnClick">
-    <img src="https://assets.codepen.io/9177687/female-4572747_640.jpg" width="100%" crossorigin="anonymous" title="Click to get classification!" />
-  </div>
-  <div class="detectOnClick">
-    <img src="https://assets.codepen.io/9177687/idea-gcbe74dc69_1920.jpg" width="100%" crossorigin="anonymous" title="Click to get classification!" />
-  </div>
+ 
 
   <h2>Demo: Webcam continuous face detection</h2>
   <p>Detect faces from your webcam. When ready click "enable webcam" below and accept access to the webcam.</p>
@@ -22,14 +14,18 @@
       <span class="mdc-button__label">ENABLE WEBCAM</span>
     </button>
     <video id="webcam" autoplay playsinline></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
   </div>
 </section>
 
 <script>
+  //@ts-nocheck
   import {
     FaceDetector,
     FilesetResolver,
   } from "@mediapipe/tasks-vision";
+   
   const demosSection = document.getElementById("demos");
   
   let faceDetector;
@@ -50,114 +46,6 @@
     demosSection.classList.remove("invisible");
   };
   initializefaceDetector();
-  
-  /********************************************************************
-   // Demo 1: Grab a bunch of images from the page and detection them
-   // upon click.
-   ********************************************************************/
-  
-  const imageContainers = document.getElementsByClassName("detectOnClick");
-  
-  for (let imageContainer of imageContainers) {
-    imageContainer.children[0].addEventListener("click", handleClick);
-  }
-  
-  /**
-   * Detect faces in still images on click
-   */
-  async function handleClick(event) {
-    const highlighters = event.target.parentNode.getElementsByClassName(
-      "highlighter"
-    );
-    while (highlighters[0]) {
-      highlighters[0].parentNode.removeChild(highlighters[0]);
-    }
-  
-    const infos = event.target.parentNode.getElementsByClassName("info");
-    while (infos[0]) {
-      infos[0].parentNode.removeChild(infos[0]);
-    }
-    const keyPoints = event.target.parentNode.getElementsByClassName("key-point");
-    while (keyPoints[0]) {
-      keyPoints[0].parentNode.removeChild(keyPoints[0]);
-    }
-  
-    if (!faceDetector) {
-      console.log("Wait for objectDetector to load before clicking");
-      return;
-    }
-  
-    // if video mode is initialized, set runningMode to image
-    if (runningMode === "VIDEO") {
-      runningMode = "IMAGE";
-      await faceDetector.setOptions({ runningMode: "IMAGE" });
-    }
-  
-    const ratio = event.target.height / event.target.naturalHeight;
-  
-    // faceDetector.detect returns a promise which, when resolved, is an array of Detection faces
-    const detections = faceDetector.detect(event.target).detections;
-    console.log(detections);
-  
-    displayImageDetections(detections, event.target);
-  }
-  
-  function displayImageDetections(detections, resultElement) {
-    const ratio = resultElement.height / resultElement.naturalHeight;
-    console.log(ratio);
-  
-    for (let detection of detections) {
-      // Description text
-      const p = document.createElement("p");
-      p.setAttribute("class", "info");
-      p.innerText =
-        "Confidence: " +
-        Math.round(parseFloat(detection.categories[0].score) * 100) +
-        "% .";
-      // Positioned at the top left of the bounding box.
-      // Height is whatever the text takes up.
-      // Width subtracts text padding in CSS so fits perfectly.
-      p.style =
-        "left: " +
-        detection.boundingBox.originX * ratio +
-        "px;" +
-        "top: " +
-        (detection.boundingBox.originY * ratio - 30) +
-        "px; " +
-        "width: " +
-        (detection.boundingBox.width * ratio - 10) +
-        "px;" +
-        "hight: " +
-        20 +
-        "px;";
-      const highlighter = document.createElement("div");
-      highlighter.setAttribute("class", "highlighter");
-      highlighter.style =
-        "left: " +
-        detection.boundingBox.originX * ratio +
-        "px;" +
-        "top: " +
-        detection.boundingBox.originY * ratio +
-        "px;" +
-        "width: " +
-        detection.boundingBox.width * ratio +
-        "px;" +
-        "height: " +
-        detection.boundingBox.height * ratio +
-        "px;";
-  
-      resultElement.parentNode.appendChild(highlighter);
-      resultElement.parentNode.appendChild(p);
-      for (let keypoint of detection.keypoints) {
-        const keypointEl = document.createElement("spam");
-        keypointEl.className = "key-point";
-        keypointEl.style.top = `${keypoint.y * resultElement.height - 3}px`;
-        keypointEl.style.left = `${keypoint.x * resultElement.width - 3}px`;
-        resultElement.parentNode.appendChild(keypointEl);
-      }
-    }
-  }
-  
   /********************************************************************
    // Demo 2: Continuously grab image from webcam stream and detect it.
    ********************************************************************/
@@ -178,9 +66,13 @@
   if (hasGetUserMedia()) {
     enableWebcamButton = document.getElementById("webcamButton");
     enableWebcamButton.addEventListener("click", enableCam);
+     // Elementos para tomar la foto
+    
   } else {
     console.warn("getUserMedia() is not supported by your browser");
   }
+
+  
   
   // Enable the live webcam view and start detection.
   async function enableCam(event) {
@@ -207,8 +99,30 @@
       .catch((err) => {
         console.error(err);
       });
-  }
+       
+     }
+
+     if (video) {
+      // Elementos para tomar la foto
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      // Evento de escucha para el botón
+      document.getElementById("snap").addEventListener("click", function() {
+        context.drawImage(video, 0, 0, 640, 480);
+        const imageBase64 = canvas.toDataURL();
+        // Ocultar el canvas después de tomar la foto
+        canvas.style.display = 'none';
+        const url = `/builtwith.json?value=${String(JSON.stringify(imageBase64))}`;
+        fetch(url, { method: 'POST'
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            // Aquí puedes hacer lo que quieras con los datos
+        }).catch(error => {console.error(error); });
+      });
+     }
   
+
+    
   let lastVideoTime = -1;
   async function predictWebcam() {
     // if image mode is initialized, create a new classifier with video runningMode
