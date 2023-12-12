@@ -1,11 +1,11 @@
 ---
-
+import MySiteLayout from '../layouts/Layout.astro';
 ---
 <link rel="stylesheet" href="/style.css">
 <h1>Face detection using the MediaPipe Face Detector task</h1>
 <section id="demos" class="invisible">
  
-
+<MySiteLayout title="Home Page">
   <h2>Demo: Webcam continuous face detection</h2>
   <p>Detect faces from your webcam. When ready click "enable webcam" below and accept access to the webcam.</p>
   <div id="liveView" class="videoView">
@@ -17,6 +17,7 @@
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
   </div>
+</MySiteLayout>  
 </section>
 
 <script>
