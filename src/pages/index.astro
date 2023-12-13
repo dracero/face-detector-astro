@@ -113,7 +113,7 @@ import MySiteLayout from '../layouts/Layout.astro';
         const imageBase64 = canvas.toDataURL();
         // Ocultar el canvas después de tomar la foto
         canvas.style.display = 'none';
-        const url = '/builtwith.json';
+        const url = ' https://face-detector-astro.vercel.app/builtwith.json';
         //const url = `/builtwith.json?value=${String("Hola")}`;
         fetch(url, { method: 'POST', body: JSON.stringify({imageBase64})
         }).then(response => response.json()).then(data => {
