@@ -43,7 +43,7 @@ export default defineConfig({
       directoryAndTrailingSlashHandler: true
     }
   })],
-  output: 'hybrid',
+  output: 'server',
   vite: {
     logLevel: 'info',
     define: {
