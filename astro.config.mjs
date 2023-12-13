@@ -3,16 +3,9 @@ import AstroPWA from '@vite-pwa/astro'
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid', 
-  vite: {
-    logLevel: 'info',
-    define: {
-      __DATE__: `'${new Date().toISOString()}'`,
-    },
-  },
   integrations: [
     AstroPWA({
-      mode: 'development',
+      mode: 'production',
       base: '/',
       scope: '/',
       includeAssets: ['favicon.svg'],
@@ -46,6 +39,7 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true,
+        type: 'module',
         navigateFallbackAllowlist: [/^\//],
       },
       experimental: {
@@ -53,4 +47,11 @@ export default defineConfig({
       }
     }),
   ],
+  output: 'hybrid', 
+  vite: {
+    logLevel: 'info',
+    define: {
+      __DATE__: `'${new Date().toISOString()}'`,
+    },
+  },
 })
