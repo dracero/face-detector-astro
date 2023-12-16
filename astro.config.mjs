@@ -7,7 +7,7 @@ import svelte from '@astrojs/svelte';
 export default defineConfig({
   integrations: [svelte(), 
     AstroPWA({
-    mode: 'development',
+    mode: 'production',
     base: '/',
     scope: '/',
     includeAssets: ['favicon.svg'],
