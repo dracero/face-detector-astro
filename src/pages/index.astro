@@ -7,11 +7,11 @@ import MySiteLayout from '../layouts/Layout.astro';
 <link rel="stylesheet" href="/style.css">
 <h1>Face detection using the MediaPipe Face Detector task</h1>
 <!--<Cam client:load/>-->
+<link rel="manifest" href="/manifest.json">
 <section id="demos" class="invisible">
  
 <MySiteLayout title="Home Page">
-  <h2>Demo: Webcam continuous face detection</h2>
-  <p>Detect faces from your webcam. When ready click "enable webcam" below and accept access to the webcam.</p>
+  <h2>Webcam continuous face detection</h2>
   <div id="liveView" class="videoView">
     <video id="webcam" autoplay playsinline></video>
     <button id="snap">Snap Photo</button>
