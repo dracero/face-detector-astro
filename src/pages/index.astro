@@ -1,22 +1,22 @@
 ---
+
 import MySiteLayout from '../layouts/Layout.astro';
+//import Cam from './Cam.svelte';
+
 ---
 <link rel="stylesheet" href="/style.css">
 <h1>Face detection using the MediaPipe Face Detector task</h1>
+<!--<Cam client:load/>-->
 <section id="demos" class="invisible">
  
 <MySiteLayout title="Home Page">
   <h2>Demo: Webcam continuous face detection</h2>
   <p>Detect faces from your webcam. When ready click "enable webcam" below and accept access to the webcam.</p>
   <div id="liveView" class="videoView">
-    <button id="webcamButton" class="mdc-button mdc-button--raised">
-      <span class="mdc-button__ripple"></span>
-      <span class="mdc-button__label">ENABLE WEBCAM</span>
-    </button>
     <video id="webcam" autoplay playsinline></video>
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
-  </div>
+  </div>   
 </MySiteLayout>  
 </section>
 
@@ -51,9 +51,9 @@ import MySiteLayout from '../layouts/Layout.astro';
    // Demo 2: Continuously grab image from webcam stream and detect it.
    ********************************************************************/
   
-  let video = document.getElementById("webcam");
+ let video = document.getElementById("webcam");
   const liveView = document.getElementById("liveView");
-  let enableWebcamButton;
+  //let enableWebcamButton;
   
   // Check if webcam access is supported.
   const hasGetUserMedia = () => !!navigator.mediaDevices?.getUserMedia;
@@ -65,25 +65,22 @@ import MySiteLayout from '../layouts/Layout.astro';
   // If webcam supported, add event listener to button for when user
   // wants to activate it.
   if (hasGetUserMedia()) {
-    enableWebcamButton = document.getElementById("webcamButton");
-    enableWebcamButton.addEventListener("click", enableCam);
+    enableCam();
      // Elementos para tomar la foto
-    
+   
   } else {
     console.warn("getUserMedia() is not supported by your browser");
   }
 
-  
-  
   // Enable the live webcam view and start detection.
   async function enableCam(event) {
-    if (!faceDetector) {
+    /*if (!faceDetector) {
       alert("Face Detector is still loading. Please try again..");
       return;
-    }
+    }*/
   
     // Hide the button.
-    enableWebcamButton.classList.add("removed");
+    //enableWebcamButton.classList.add("removed");
   
     // getUsermedia parameters
     const constraints = {
@@ -111,6 +108,7 @@ import MySiteLayout from '../layouts/Layout.astro';
       document.getElementById("snap").addEventListener("click", function() {
         context.drawImage(video, 0, 0, 640, 480);
         const imageBase64 = canvas.toDataURL();
+        console.log(imageBase64);
         // Ocultar el canvas después de tomar la foto
         canvas.style.display = 'none';
         const url = '/builtwith.json';
@@ -210,5 +208,5 @@ import MySiteLayout from '../layouts/Layout.astro';
       }
     }
   }
-  
 </script>
+

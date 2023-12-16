@@ -1,12 +1,13 @@
 import { defineConfig } from 'astro/config';
 import AstroPWA from '@vite-pwa/astro';
-
 import vercel from "@astrojs/vercel/serverless";
+import svelte from '@astrojs/svelte';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [AstroPWA({
-    mode: 'production',
+  integrations: [svelte(), 
+    AstroPWA({
+    mode: 'development',
     base: '/',
     scope: '/',
     includeAssets: ['favicon.svg'],
@@ -32,7 +33,7 @@ export default defineConfig({
     },
     workbox: {
       navigateFallback: '/',
-      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt}']
+      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,ts,json, mjs}']
     },
     devOptions: {
       enabled: true,

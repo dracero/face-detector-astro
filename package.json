@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.0",
+    "@astrojs/svelte": "^5.0.1",
     "@astrojs/vercel": "^6.0.2",
     "@mediapipe/tasks-vision": "^0.10.7",
     "mongoose": "^8.0.3",
+    "svelte": "^4.2.8",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.1",
     "@vite-pwa/astro": "latest",
     "astro": "^4.0.1",
     "workbox-window": "^7.0.0"
