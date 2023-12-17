@@ -10,7 +10,7 @@ export default defineConfig({
     mode: 'production',
     base: '/',
     scope: '/',
-    includeAssets: ['favicon.svg'],
+    includeAssets: ['favicon.svg', 'robots.txt', 'safari-pinned-tab.svg', 'site.webmanifest', 'pwa-192x192.png', 'pwa-512x512.png'],
     registerType: 'autoUpdate',
     manifest: {
       name: 'Astro PWA',
@@ -37,7 +37,6 @@ export default defineConfig({
     },
     devOptions: {
       enabled: true,
-      type: 'module',
       navigateFallbackAllowlist: [/^\//]
     },
     experimental: {

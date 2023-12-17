@@ -1,5 +1,4 @@
 ---
-
 import MySiteLayout from '../layouts/Layout.astro';
 //import Cam from './Cam.svelte';
 
@@ -7,7 +6,6 @@ import MySiteLayout from '../layouts/Layout.astro';
 <link rel="stylesheet" href="/style.css">
 <h1>Face detection using the MediaPipe Face Detector task</h1>
 <!--<Cam client:load/>-->
-<link rel="manifest" href="/manifest.json">
 <section id="demos" class="invisible">
  
 <MySiteLayout title="Home Page">
@@ -19,7 +17,6 @@ import MySiteLayout from '../layouts/Layout.astro';
   </div>   
 </MySiteLayout>  
 </section>
-
 <script>
   //@ts-nocheck
   import {
@@ -27,6 +24,8 @@ import MySiteLayout from '../layouts/Layout.astro';
     FilesetResolver,
   } from "@mediapipe/tasks-vision";
    
+ 
+  
   const demosSection = document.getElementById("demos");
   
   let faceDetector;
